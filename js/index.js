@@ -36,7 +36,7 @@ function getProducts() {
 function displayProduct(product) {
 	document.querySelector("#section").innerHTML += `
         <div class="row justify-content-center">
-            <div class="card col col-lg-8 ">
+            <div class="card col col-lg-8">
 				<div class="card-img-top">
 					<img class="img" src="${product.imageUrl}" alt="" />
 				</div>
