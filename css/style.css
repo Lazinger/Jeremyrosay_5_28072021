@@ -1,0 +1,32 @@
+.container {
+	max-width: 64rem;
+}
+
+main {
+	display: flex;
+	justify-content: center;
+}
+.header {
+	display: flex;
+	justify-content: space-between;
+	padding-top: 1rem;
+}
+ul {
+	list-style: none;
+	text-decoration: none;
+}
+ul li {
+	padding-top: 1rem;
+}
+a {
+	text-decoration: none;
+	font-size: 1.5rem;
+}
+
+.card {
+	width: 30rem;
+}
+
+.img {
+	width: 30rem;
+}
