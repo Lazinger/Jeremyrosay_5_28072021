@@ -6,10 +6,7 @@ async function main() {
 	const products = await getProducts();
 	console.log(products);
 	//displayProduct(products);
-	for (let i = 0; i < products.length; i += 1) {
-		const product = products[i];
-		displayProduct(product);
-	}
+	products.forEach(displayProducts);
 }
 
 //On va recuperer les infos products dans l'API
@@ -33,22 +30,15 @@ function getProducts() {
 	);
 }
 
-function displayProduct(product) {
-	document.querySelector("#section").innerHTML += `
-        <div class="row justify-content-center">
-            <div class="card col col-lg-8">
-				<div class="card-img-top">
-					<img class="img" src="${product.imageUrl}" alt="" />
-				</div>
-				<div class="card-body">
-					<div>
-						<h2 id="product__title" class="card-title">${product.name}</h2>
-						<p id="product__descrption" class="card-text">${product.description}</p>
-					</div>
-					<div>
-						<span id="product__price" class="product__price">${product.price} €</span>
-					</div>
-				</div>
-			</div>
-        </div>`;
+function displayProducts(product) {
+	const templateElement = document.getElementById("templateProduct");
+	const cloneElement = document.importNode(templateElement.content, true);
+
+	cloneElement.getElementById("product__image").src = product.imageUrl;
+	cloneElement.getElementById("product__title").textContent = product.name;
+	cloneElement.getElementById("product__description").textContent =
+		product.description;
+	cloneElement.getElementById("product__price").textContent = product.price;
+
+	document.getElementById("section").appendChild(cloneElement);
 }
