@@ -5,7 +5,6 @@ async function main() {
 	//On applique await pour attendre le resultat de la promise
 	const products = await getProducts();
 	console.log(products);
-	//displayProduct(products);
 	products.forEach(displayProducts);
 }
 
@@ -34,11 +33,12 @@ function displayProducts(product) {
 	const templateElement = document.getElementById("templateProduct");
 	const cloneElement = document.importNode(templateElement.content, true);
 
-	cloneElement.getElementById("product__image").src = product.imageUrl;
-	cloneElement.getElementById("product__title").textContent = product.name;
-	cloneElement.getElementById("product__description").textContent =
-		product.description;
-	cloneElement.getElementById("product__price").textContent = product.price;
+	cloneElement.getElementById("productImage").src = product.imageUrl;
+	cloneElement.getElementById("productImageLink").href += `?id=${product._id}`;
+	cloneElement.getElementById("productTitle").textContent = product.name;
+
+	cloneElement.getElementById("productPrice").textContent = product.price;
+	cloneElement.getElementById("productLink").href += `?id=${product._id}`;
 
 	document.getElementById("section").appendChild(cloneElement);
 }
