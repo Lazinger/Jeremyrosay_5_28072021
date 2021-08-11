@@ -36,7 +36,6 @@ function displayProducts(product) {
 	cloneElement.getElementById("productImage").src = product.imageUrl;
 	cloneElement.getElementById("productImageLink").href += `?id=${product._id}`;
 	cloneElement.getElementById("productTitle").textContent = product.name;
-
 	cloneElement.getElementById("productPrice").textContent = product.price;
 	cloneElement.getElementById("productLink").href += `?id=${product._id}`;
 
