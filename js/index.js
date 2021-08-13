@@ -5,6 +5,7 @@ async function main() {
 	//On applique await pour attendre le resultat de la promise
 	const products = await getProducts();
 	console.log(products);
+
 	products.forEach(displayProducts);
 }
 
@@ -36,7 +37,7 @@ function displayProducts(product) {
 	cloneElement.getElementById("productImage").src = product.imageUrl;
 	cloneElement.getElementById("productImageLink").href += `?id=${product._id}`;
 	cloneElement.getElementById("productTitle").textContent = product.name;
-	cloneElement.getElementById("productPrice").textContent = product.price;
+	cloneElement.getElementById("productPrice").textContent = product.price / 100 + ",00 €";
 	cloneElement.getElementById("productLink").href += `?id=${product._id}`;
 
 	document.getElementById("section").appendChild(cloneElement);
