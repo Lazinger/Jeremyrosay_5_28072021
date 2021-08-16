@@ -13,6 +13,7 @@ async function main() {
 	//On recupere les options
 	const lenses = getLenses(product);
 
+	//On recupère les informations du produit selectionné au click du bouton
 	const productInBasket = getProductInBasket(product);
 
 	//On affiche le produit de façon dynamique
@@ -34,8 +35,9 @@ function getProduct(productId) {
 			})
 			//On recupere l'erreur si erreur il y a
 			.catch(function (error) {
+				console.log("error");
 				alert(error);
-				prompt("errororororo");
+				window.location.href = "index.html";
 			})
 	);
 }
@@ -79,13 +81,14 @@ function displayProduct(product, reduxPrice, lenses) {
 function getProductInBasket(product) {
 	const idForm = document.getElementById("optionsForm");
 	const buttonBasket = document.getElementById("addToBasket");
+
+	//On enregistre les produits selectionnés au click sur le bouton
 	buttonBasket.addEventListener("click", (event) => {
 		event.preventDefault();
+		//Recup l'option choisit par l'utilisateur dans la selection Lense
 		const idForm = document.getElementById("productLensesOptions");
-		console.log(idForm);
 		const choiceForm = idForm.value;
-		console.log(choiceForm);
-
+		//On stock les informations produit dans une variable
 		let productTab = {
 			productName: product.name,
 			productId: product._id,
@@ -94,7 +97,16 @@ function getProductInBasket(product) {
 			productPrice: product.price / 100,
 		};
 
-		console.log(productTab);
+		let productInSessionStorage = JSON.parse(sessionStorage.getItem("product"));
+
+		if (productInSessionStorage) {
+			productInSessionStorage.push(productTab);
+			sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
+		} else {
+			productInSessionStorage = [];
+			productInSessionStorage.push(productTab);
+			sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
+		}
 	});
 }
 
