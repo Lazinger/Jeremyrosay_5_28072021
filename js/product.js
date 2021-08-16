@@ -8,11 +8,12 @@ async function main() {
 	const product = await getProduct(productId);
 
 	//On recup le prix et on divise par 100
-	const reduxPrice = formatedPrice(product);
+	const reduxPrice = await formatedPrice(product);
 
 	//On recupere les options
 	const lenses = getLenses(product);
-	console.log(lenses);
+
+	const productInBasket = getProductInBasket(product);
 
 	//On affiche le produit de façon dynamique
 	displayProduct(product, reduxPrice, lenses);
@@ -34,9 +35,14 @@ function getProduct(productId) {
 			//On recupere l'erreur si erreur il y a
 			.catch(function (error) {
 				alert(error);
-				console.log("error");
+				prompt("errororororo");
 			})
 	);
+}
+
+function formatedPrice(product) {
+	let newPrice = product.price / 100;
+	return newPrice;
 }
 
 function getLenses(option) {
@@ -44,11 +50,6 @@ function getLenses(option) {
 	for (i = 0; i < options.length; i += 1) {
 		return options;
 	}
-}
-
-function formatedPrice(product) {
-	let newPrice = product.price / 100;
-	return newPrice;
 }
 
 function getProductId() {
@@ -73,6 +74,28 @@ function displayProduct(product, reduxPrice, lenses) {
 		selectLenses.innerHTML = lenses[i];
 		lensSelect.appendChild(selectLenses);
 	}
+}
+
+function getProductInBasket(product) {
+	const idForm = document.getElementById("optionsForm");
+	const buttonBasket = document.getElementById("addToBasket");
+	buttonBasket.addEventListener("click", (event) => {
+		event.preventDefault();
+		const idForm = document.getElementById("productLensesOptions");
+		console.log(idForm);
+		const choiceForm = idForm.value;
+		console.log(choiceForm);
+
+		let productTab = {
+			productName: product.name,
+			productId: product._id,
+			productOption: choiceForm,
+			productQuantity: 1,
+			productPrice: product.price / 100,
+		};
+
+		console.log(productTab);
+	});
 }
 
 // window.localStorage.setItem()
