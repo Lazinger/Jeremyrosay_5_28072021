@@ -97,15 +97,22 @@ function getProductInBasket(product) {
 			productPrice: product.price / 100,
 		};
 
+		//Declaration de la variable dans laquel on va mettre les keys/value du session storage
 		let productInSessionStorage = JSON.parse(sessionStorage.getItem("product"));
 
+		//Ajout d'un "product" dans le tableau productTab
+		const addProductInSessionStorage = () => {
+			productInSessionStorage.push(productTab);
+			sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
+		};
+
 		if (productInSessionStorage) {
-			productInSessionStorage.push(productTab);
-			sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
+			//Si SessionStorage possède déja un product alors on rajoute le nouveau a celui si
+			addProductInSessionStorage();
 		} else {
+			//Si SessionStorage vide alors on crée un tableau avec un nouveau product
 			productInSessionStorage = [];
-			productInSessionStorage.push(productTab);
-			sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
+			addProductInSessionStorage();
 		}
 	});
 }
