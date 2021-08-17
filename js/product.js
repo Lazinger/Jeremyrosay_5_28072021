@@ -14,10 +14,11 @@ async function main() {
 	const lenses = getLenses(product);
 
 	//On recupère les informations du produit selectionné au click du bouton
-	const productInBasket = getProductInBasket(product);
+	const productInCart = addProductInCart(product);
 
 	//On affiche le produit de façon dynamique
 	displayProduct(product, reduxPrice, lenses);
+	console.log(product);
 }
 
 function getProduct(productId) {
@@ -78,47 +79,69 @@ function displayProduct(product, reduxPrice, lenses) {
 	}
 }
 
-function getProductInBasket(product) {
-	const idForm = document.getElementById("optionsForm");
-	const buttonBasket = document.getElementById("addToBasket");
+function addProductInCart(product) {
+	const buttonCart = document.getElementById("addToCart");
 
-	//On enregistre les produits selectionnés au click sur le bouton
-	buttonBasket.addEventListener("click", (event) => {
-		event.preventDefault();
-		//Recup l'option choisit par l'utilisateur dans la selection Lense
-		const idForm = document.getElementById("productLensesOptions");
-		const choiceForm = idForm.value;
-		//On stock les informations produit dans une variable
-		let productTab = {
+	buttonCart.addEventListener("click", () => {
+		getProductInCart(product);
+		totalCost(product);
+	});
+}
+
+function getProductInCart(product) {
+	let productInSessionStorage = [];
+	//Recup l'option choisit par l'utilisateur dans la selection Lense
+	const idForm = document.getElementById("productLensesOptions");
+	const choiceForm = idForm.value;
+
+	if (!sessionStorage.getItem("product")) {
+		productInSessionStorage.push({
+			productImage: product.imageUrl,
 			productName: product.name,
 			productId: product._id,
 			productOption: choiceForm,
 			productQuantity: 1,
-			productPrice: product.price / 100,
-		};
+			productPrice: product.price,
+		});
+		sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
+	} else {
+		productInSessionStorage = JSON.parse(sessionStorage.getItem("product"));
+		let exist = false;
 
-		//Declaration de la variable dans laquel on va mettre les keys/value du session storage
-		let productInSessionStorage = JSON.parse(sessionStorage.getItem("product"));
+		// Vérifie pour chaque élément du tableau produits que l'élément existe déjà, si c'est le cas ajout de 1 à la quantité du produit
+		productInSessionStorage.forEach((element) => {
+			if (element.productId == product._id) {
+				element.productQuantity++;
+				exist = true;
+			}
+		});
 
-		//Ajout d'un "product" dans le tableau productTab
-		const addProductInSessionStorage = () => {
-			productInSessionStorage.push(productTab);
-			sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
-		};
-
-		if (productInSessionStorage) {
-			//Si SessionStorage possède déja un product alors on rajoute le nouveau a celui si
-			addProductInSessionStorage();
-		} else {
-			//Si SessionStorage vide alors on crée un tableau avec un nouveau product
-			productInSessionStorage = [];
-			addProductInSessionStorage();
+		// Ajoute un produit différent au panier
+		if (!exist) {
+			productInSessionStorage.push({
+				productImage: product.imageUrl,
+				productName: product.name,
+				productId: product._id,
+				productOption: choiceForm,
+				productQuantity: 1,
+				productPrice: product.price,
+			});
 		}
-	});
+
+		// Met à jour le panier
+		sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
+	}
 }
 
-// window.localStorage.setItem()
-// function addToBasket() {
-// 	console.log(product, "yoyoyo");
-// 	window.sessionStorage.setItem("produit", JSON.stringify(product));
-// }
+function totalCost(product) {
+	let cartCost = sessionStorage.getItem("totalCost");
+
+	// Si le prix total du panier n'est pas nul, ajoute le prix du produit à celui du panier
+	if (cartCost != null) {
+		cartCost = parseInt(cartCost);
+		sessionStorage.setItem("totalCost", cartCost + product.price);
+	} else {
+		// Sinon le prix total du panier correspond au prix du produit
+		sessionStorage.setItem("totalCost", product.price);
+	}
+}
