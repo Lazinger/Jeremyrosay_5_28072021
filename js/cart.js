@@ -1,13 +1,5 @@
-main();
-
-function main() {
-	let productInSessionStorage = JSON.parse(sessionStorage.getItem("product"));
-	let totalCost = JSON.parse(sessionStorage.getItem("totalCost"));
-
-	displayPageCart(productInSessionStorage);
-	displayCartItems(productInSessionStorage, totalCost);
-	removeItem(productInSessionStorage);
-}
+let productInSessionStorage = JSON.parse(sessionStorage.getItem("product"));
+let totalCost = JSON.parse(sessionStorage.getItem("totalCost"));
 
 function displayPageCart(productInSessionStorage) {
 	// Si le panier est vide, affiche "Votre panier est vide !" avec un bouton "Continuer mes achats"
@@ -16,7 +8,7 @@ function displayPageCart(productInSessionStorage) {
 		cartTitle.innerHTML = "Votre panier est vide !";
 
 		let cartContent = document.getElementById("cartContent");
-		let formContent = document.getElementById("formContent");
+		// let formContent = document.getElementById("formContent");
 		let parent = document.querySelector(".main");
 		parent.removeChild(cartContent);
 	} else {
@@ -27,6 +19,30 @@ function displayPageCart(productInSessionStorage) {
 		div1.nextElementSibling.remove();
 	}
 }
+
+function decreaseQuantity(productInSessionStorage) {
+	let substractButton = document.querySelectorAll(".subButton");
+
+	substractButton.addEventListener("click", () => {
+		if (productInSessionStorage.productQuantity > 1) {
+			productInSessionStorage.productQuantity--;
+		}
+	});
+}
+
+// function removeItem() {
+// 	let product = JSON.parse(sessionStorage.getItem("product"));
+// 	product = product.filter((p) => p.productId !== productId);
+// 	// Mettre a jour le prix total
+// 	sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
+// 	window.location.reload();
+// }
+
+// Pour Supprimer un produit je vais chercher le produit correspondant par ID et le supprimer de mon array
+//  function removeItem2(productId) {
+// 	let product = JSON.parse(sessionStorage.getItem("product"));
+// 	product = product.filter((p) => p.productId !== productId )
+// 	// Mettre a jour le prix total
 
 function displayCartItems(productInSessionStorage, totalCost) {
 	let cartContainer = document.getElementById("cartContainer");
@@ -61,11 +77,31 @@ function displayCartItems(productInSessionStorage, totalCost) {
 			cartProductPrice.innerHTML = product.productPrice / 100 + ",00 €";
 			cartItem.appendChild(cartProductPrice);
 
+			// Affiche la div qui contiendra la quantité et les boutons + et -
+			const cartProductQuantityContainer = document.createElement("div");
+			cartProductQuantityContainer.setAttribute(
+				"class",
+				"quantityContainer row col-2 col-md-4 flex justify-content-center text-center"
+			);
+			cartItem.appendChild(cartProductQuantityContainer);
+
+			// Affiche le bouton "-"
+			const cartProductQuantitySub = document.createElement("button");
+			cartProductQuantitySub.setAttribute("class", "subButton col-2 col-md-2 text-center");
+			cartProductQuantitySub.innerHTML = "-";
+			cartProductQuantityContainer.appendChild(cartProductQuantitySub);
+
 			// Affiche la quantité
 			const cartProductQuantity = document.createElement("div");
-			cartProductQuantity.setAttribute("class", "quantity col-6 col-md-3 text-center");
+			cartProductQuantity.setAttribute("class", "quantity col-2 col-md-6 text-center");
 			cartProductQuantity.innerHTML = product.productQuantity;
-			cartItem.appendChild(cartProductQuantity);
+			cartProductQuantityContainer.appendChild(cartProductQuantity);
+
+			// Affiche le bouton "+"
+			const cartProductQuantityAdd = document.createElement("button");
+			cartProductQuantityAdd.setAttribute("class", "addButton col-2 col-md-2 text-center");
+			cartProductQuantityAdd.innerHTML = "+";
+			cartProductQuantityContainer.appendChild(cartProductQuantityAdd);
 
 			// Affiche le prix total par produit
 			const cartProductTotalPrice = document.createElement("p");
@@ -94,29 +130,6 @@ function displayCartItems(productInSessionStorage, totalCost) {
 	}
 }
 
-function removeItem(totalCost, productInSessionStorage) {
-	// Récupère le bouton poubelle
-	let removeButton = document.querySelectorAll(".removeButton");
-	let product = JSON.parse(sessionStorage.getItem("product"));
-
-	removeButton.forEach((btn) => {
-		btn.addEventListener("click", function () {
-			let id = this.getAttribute("data-item");
-
-			// Supprime le produit du panier si l'attribut "id" de la poubelle est identique à celui du produit
-			for (let i = 0; i < product.length; i++) {
-				if (product[i].productId === id) {
-					// Supprime le produit du panier
-					product.splice(i, 1);
-					// Met à jour le prix total du panier
-					sessionStorage.setItem("totalCost", totalCost - product[i].productPrice * product[i].productQuantity);
-
-					// Met à jour le panier dans le local storage
-					sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
-					// Recharge la page
-					window.location.reload();
-				}
-			}
-		});
-	});
-}
+displayPageCart(productInSessionStorage, totalCost);
+displayCartItems(productInSessionStorage, totalCost);
+decreaseQuantity(productInSessionStorage);

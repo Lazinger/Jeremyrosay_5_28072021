@@ -32,13 +32,8 @@ function getProduct(productId) {
 				if (dataProducts._id) {
 					return dataProducts;
 				} else {
+					window.location.href = "index.html";
 				}
-			})
-			//On recupere l'erreur si erreur il y a
-			.catch(function (error) {
-				console.log("error");
-				alert(error);
-				window.location.href = "index.html";
 			})
 	);
 }
@@ -115,6 +110,24 @@ function getProductInCart(product) {
 				exist = true;
 			}
 		});
+		// let productTempIndex = productInSessionStorage.findIndex((element) => {
+		// 	return element.productId == product._id && element.productOption == product.productOption;
+		// });
+		// Si productIndex == -1 alors j'ajoute un nouveau produit
+		// Sinon je modifie le produit concerné
+
+		// if (productTempIndex == -1) {
+		// 	productInSessionStorage.push({
+		// 		productImage: product.imageUrl,
+		// 		productName: product.name,
+		// 		productId: product._id,
+		// 		productOption: choiceForm,
+		// 		productQuantity: 1,
+		// 		productPrice: product.price,
+		// 	});
+		// } else {
+		// 	productInSessionStorage[productTempIndex].productQuantity += 1;
+		// }
 
 		// Ajoute un produit différent au panier
 		if (!exist) {
