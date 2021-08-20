@@ -119,12 +119,38 @@ function displayCartItems(productInSessionStorage, totalCost) {
 	console.log(substractButton);
 	let addButton = document.getElementsByClassName("addButton");
 	let products = JSON.parse(sessionStorage.getItem("product"));
+	let newTotalCost = JSON.parse(sessionStorage.getItem("totalCost"));
+
+	// Incremente de 1 à chaque click sur le bouton +
 
 	for (let i = 0; i < addButton.length; i += 1) {
 		let button = addButton[i];
 		button.addEventListener("click", (event) => {
 			let buttonClicked = event.target;
-			console.log(buttonClicked);
+			let divQty = buttonClicked.parentElement.children[1];
+			let divQtyValue = products[i].productQuantity;
+			let newQtyValue = (divQtyValue += 1);
+			products[i].productQuantity = newQtyValue;
+			sessionStorage.setItem("product", JSON.stringify(products));
+
+			sessionStorage.setItem("totalCost", JSON.stringify(newTotalCost));
+
+			document.location.reload();
+		});
+	}
+
+	// Decremente de 1 a chaque click sur le bouton -
+
+	for (let i = 0; i < substractButton.length; i += 1) {
+		let button = substractButton[i];
+		button.addEventListener("click", (event) => {
+			let buttonClicked = event.target;
+			let divQty = buttonClicked.parentElement.children[1];
+			let divQtyValue = products[i].productQuantity;
+			let newQtyValue = (divQtyValue -= 1);
+			products[i].productQuantity = newQtyValue;
+			sessionStorage.setItem("product", JSON.stringify(products));
+			document.location.reload();
 		});
 	}
 }
