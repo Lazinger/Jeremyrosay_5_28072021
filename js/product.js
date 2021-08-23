@@ -83,67 +83,106 @@ function addProductInCart(product) {
 	});
 }
 
+const popupConfirm = (product) => {
+	const idForm = document.getElementById("productLensesOptions");
+	const choiceForm = idForm.value;
+	if (
+		window.confirm(
+			`Le produit ${product.name} avec la lense : ${choiceForm} à bien été ajouté au panier
+Ok pour acceder au panier ou ANNULER pour rester sur la page du produit`
+		)
+	) {
+		window.location.href = "cart.html";
+	} else {
+	}
+};
 function getProductInCart(product) {
-	let productInSessionStorage = [];
-	//Recup l'option choisit par l'utilisateur dans la selection Lense
 	const idForm = document.getElementById("productLensesOptions");
 	const choiceForm = idForm.value;
 
-	if (!sessionStorage.getItem("product")) {
-		productInSessionStorage.push({
-			productImage: product.imageUrl,
-			productName: product.name,
-			productId: product._id,
-			productOption: choiceForm,
-			productQuantity: 1,
-			productPrice: product.price,
-		});
-		sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
+	let optionsProduct = {
+		name: product.name,
+		id: product._id,
+		image: product.imageUrl,
+		lenses: choiceForm,
+		quantity: 1,
+		price: product.price / 100,
+	};
+
+	let productInSessionStorage = JSON.parse(sessionStorage.getItem("products"));
+
+	if (productInSessionStorage) {
+		productInSessionStorage.push(optionsProduct);
+		sessionStorage.setItem("products", JSON.stringify(productInSessionStorage));
+		popupConfirm(product);
 	} else {
-		productInSessionStorage = JSON.parse(sessionStorage.getItem("product"));
-		let exist = false;
-
-		// Vérifie pour chaque élément du tableau produits que l'élément existe déjà, si c'est le cas ajout de 1 à la quantité du produit
-		productInSessionStorage.forEach((element) => {
-			if (element.productId == product._id) {
-				element.productQuantity++;
-				exist = true;
-			}
-		});
-		// let productTempIndex = productInSessionStorage.findIndex((element) => {
-		// 	return element.productId == product._id && element.productOption == product.productOption;
-		// });
-		// Si productIndex == -1 alors j'ajoute un nouveau produit
-		// Sinon je modifie le produit concerné
-
-		// if (productTempIndex == -1) {
-		// 	productInSessionStorage.push({
-		// 		productImage: product.imageUrl,
-		// 		productName: product.name,
-		// 		productId: product._id,
-		// 		productOption: choiceForm,
-		// 		productQuantity: 1,
-		// 		productPrice: product.price,
-		// 	});
-		// } else {
-		// 	productInSessionStorage[productTempIndex].productQuantity += 1;
-		// }
-
-		// Ajoute un produit différent au panier
-		if (!exist) {
-			productInSessionStorage.push({
-				productImage: product.imageUrl,
-				productName: product.name,
-				productId: product._id,
-				productOption: choiceForm,
-				productQuantity: 1,
-				productPrice: product.price,
-			});
-		}
-
-		// Met à jour le panier
-		sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
+		productInSessionStorage = [];
+		productInSessionStorage.push(optionsProduct);
+		sessionStorage.setItem("products", JSON.stringify(productInSessionStorage));
+		popupConfirm(product);
 	}
+
+	// let productInSessionStorage = [];
+
+	// //Recup l'option choisit par l'utilisateur dans la selection Lense
+
+	// if (!sessionStorage.getItem("product")) {
+	// 	productInSessionStorage.push({
+	// 		image: product.imageUrl,
+	// 		name: product.name,
+	// 		id: product._id,
+	// 		option: choiceForm,
+	// 		quantity: 1,
+	// 		price: product.price,
+	// 	});
+
+	// 	sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
+	// } else {
+	// 	productInSessionStorage = JSON.parse(sessionStorage.getItem("product"));
+	// 	let exist = false;
+
+	// 	// Vérifie pour chaque élément du tableau produits que l'élément existe déjà, si c'est le cas ajout de 1 à la quantité du produit
+	// 	productInSessionStorage.forEach((element) => {
+	// 		if (element.productId == product._id) {
+	// 			element.productQuantity++;
+	// 			exist = true;
+	// 		}
+	// 	});
+	// 	// let productTempIndex = productInSessionStorage.findIndex((element) => {
+	// 	// 	return element.productId == product._id && element.productOption == product.productOption;
+	// 	// });
+	// 	// Si productIndex == -1 alors j'ajoute un nouveau produit
+	// 	// Sinon je modifie le produit concerné
+
+	// 	// if (productTempIndex == -1) {
+	// 	// 	productInSessionStorage.push({
+	// 	// 		productImage: product.imageUrl,
+	// 	// 		productName: product.name,
+	// 	// 		productId: product._id,
+	// 	// 		productOption: choiceForm,
+	// 	// 		productQuantity: 1,
+	// 	// 		productPrice: product.price,
+	// 	// 	});
+	// 	// } else {
+	// 	// 	productInSessionStorage[productTempIndex].productQuantity += 1;
+	// 	// }
+
+	// 	// Ajoute un produit différent au panier
+	// 	if (!exist) {
+	// 		productInSessionStorage.push({
+	// 			productImage: product.imageUrl,
+	// 			productName: product.name,
+	// 			productId: product._id,
+	// 			productOption: choiceForm,
+	// 			productQuantity: 1,
+	// 			productPrice: product.price,
+	// 		});
+	// 	}
+	// 	console.log(productInSessionStorage);
+
+	// 	// Met à jour le panier
+	// 	sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
+	// }
 }
 
 function totalCost(product) {
