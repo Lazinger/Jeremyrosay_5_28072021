@@ -1,5 +1,6 @@
 let productInSessionStorage = JSON.parse(sessionStorage.getItem("products"));
-let totalCost = JSON.parse(sessionStorage.getItem("totalCost"));
+
+// ************************************************AFFICHER ZONE PANIER******************************//
 
 function displayPageCart(productInSessionStorage) {
 	// Si le panier est vide, affiche "Votre panier est vide !" avec un bouton "Continuer mes achats"
@@ -20,17 +21,24 @@ function displayPageCart(productInSessionStorage) {
 	}
 }
 
-// function removeItem() {
-// 	let product = JSON.parse(sessionStorage.getItem("product"));
-// 	product = product.filter((p) => p.productId !== productId);
-// 	// Mettre a jour le prix total
-// 	sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
-// 	window.location.reload();
-// }
-
 // 	// Mettre a jour le prix total
 
-function displayCartItems(productInSessionStorage, totalCost) {
+// ************************************************AFFICHER ELEMENT DU PANIER******************************//
+
+function displayCartItems(productInSessionStorage) {
+	// ************************************************CREATION AFFICHE PRIX TOTAL******************************//
+	let arrayTotalCost = [];
+
+	for (i = 0; i < productInSessionStorage.length; i += 1) {
+		let pricePerProduct = productInSessionStorage[i].price * productInSessionStorage[i].quantity;
+		console.log(pricePerProduct);
+
+		arrayTotalCost.push(pricePerProduct);
+	}
+
+	const reducer = (acc, cur) => acc + cur;
+	const totalCost = arrayTotalCost.reduce(reducer, 0);
+
 	let cartContainer = document.getElementById("cartContainer");
 	// Si le panier contient des produits, il les affiche
 	if (productInSessionStorage.length > 0) {
@@ -109,19 +117,18 @@ function displayCartItems(productInSessionStorage, totalCost) {
             </svg>`;
 			divRemoveButton.appendChild(removeButton);
 
-			// Affiche le prix total du panier
+			//Affiche le prix total du panier
 			const totalCartPrice = document.getElementById("totalCartPrice");
-			totalCartPrice.innerHTML = totalCost / 100 + ",00 €";
+			totalCartPrice.innerHTML = totalCost + ",00 €";
 		}
 	}
 
+	//****************************************CREATION BOUTON INCREMENTATION ET DECREMENTATION*************
 	let substractButton = document.getElementsByClassName("subButton");
 	let addButton = document.getElementsByClassName("addButton");
-
 	let products = JSON.parse(sessionStorage.getItem("products"));
 
 	// Incremente de 1 à chaque click sur le bouton +
-
 	for (let i = 0; i < addButton.length; i += 1) {
 		let button = addButton[i];
 		button.addEventListener("click", (event) => {
@@ -141,7 +148,6 @@ function displayCartItems(productInSessionStorage, totalCost) {
 	}
 
 	// Decremente de 1 a chaque click sur le bouton -
-
 	for (let i = 0; i < substractButton.length; i += 1) {
 		let button = substractButton[i];
 		button.addEventListener("click", (event) => {
@@ -158,6 +164,7 @@ function displayCartItems(productInSessionStorage, totalCost) {
 		});
 	}
 
+	// ************************************************CREATION BOUTON SUPPRIMER ELEMENT EN COURS******************************//
 	let removeButton = document.querySelectorAll(".removeButton");
 
 	for (let i = 0; i < removeButton.length; i += 1) {
@@ -173,7 +180,19 @@ function displayCartItems(productInSessionStorage, totalCost) {
 			document.location.reload();
 		});
 	}
+
+	// ************************************************CREATION BOUTON VIDER LE PANIER******************************//
+	let deleteCart = document.getElementById("deleteCart");
+
+	deleteCart.addEventListener("click", (event) => {
+		event.preventDefault();
+
+		sessionStorage.clear();
+		document.location.reload();
+	});
+
+	console.log(totalCost);
 }
 
-displayPageCart(productInSessionStorage, totalCost);
-displayCartItems(productInSessionStorage, totalCost);
+displayPageCart(productInSessionStorage);
+displayCartItems(productInSessionStorage);

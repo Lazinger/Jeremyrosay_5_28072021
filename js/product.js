@@ -79,7 +79,6 @@ function addProductInCart(product) {
 
 	buttonCart.addEventListener("click", () => {
 		getProductInCart(product);
-		totalCost(product);
 	});
 }
 
@@ -120,80 +119,5 @@ function getProductInCart(product) {
 		productInSessionStorage.push(optionsProduct);
 		sessionStorage.setItem("products", JSON.stringify(productInSessionStorage));
 		popupConfirm(product);
-	}
-
-	// let productInSessionStorage = [];
-
-	// //Recup l'option choisit par l'utilisateur dans la selection Lense
-
-	// if (!sessionStorage.getItem("product")) {
-	// 	productInSessionStorage.push({
-	// 		image: product.imageUrl,
-	// 		name: product.name,
-	// 		id: product._id,
-	// 		option: choiceForm,
-	// 		quantity: 1,
-	// 		price: product.price,
-	// 	});
-
-	// 	sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
-	// } else {
-	// 	productInSessionStorage = JSON.parse(sessionStorage.getItem("product"));
-	// 	let exist = false;
-
-	// 	// Vérifie pour chaque élément du tableau produits que l'élément existe déjà, si c'est le cas ajout de 1 à la quantité du produit
-	// 	productInSessionStorage.forEach((element) => {
-	// 		if (element.productId == product._id) {
-	// 			element.productQuantity++;
-	// 			exist = true;
-	// 		}
-	// 	});
-	// 	// let productTempIndex = productInSessionStorage.findIndex((element) => {
-	// 	// 	return element.productId == product._id && element.productOption == product.productOption;
-	// 	// });
-	// 	// Si productIndex == -1 alors j'ajoute un nouveau produit
-	// 	// Sinon je modifie le produit concerné
-
-	// 	// if (productTempIndex == -1) {
-	// 	// 	productInSessionStorage.push({
-	// 	// 		productImage: product.imageUrl,
-	// 	// 		productName: product.name,
-	// 	// 		productId: product._id,
-	// 	// 		productOption: choiceForm,
-	// 	// 		productQuantity: 1,
-	// 	// 		productPrice: product.price,
-	// 	// 	});
-	// 	// } else {
-	// 	// 	productInSessionStorage[productTempIndex].productQuantity += 1;
-	// 	// }
-
-	// 	// Ajoute un produit différent au panier
-	// 	if (!exist) {
-	// 		productInSessionStorage.push({
-	// 			productImage: product.imageUrl,
-	// 			productName: product.name,
-	// 			productId: product._id,
-	// 			productOption: choiceForm,
-	// 			productQuantity: 1,
-	// 			productPrice: product.price,
-	// 		});
-	// 	}
-	// 	console.log(productInSessionStorage);
-
-	// 	// Met à jour le panier
-	// 	sessionStorage.setItem("product", JSON.stringify(productInSessionStorage));
-	// }
-}
-
-function totalCost(product) {
-	let cartCost = sessionStorage.getItem("totalCost");
-
-	// Si le prix total du panier n'est pas nul, ajoute le prix du produit à celui du panier
-	if (cartCost != null) {
-		cartCost = parseInt(cartCost);
-		sessionStorage.setItem("totalCost", cartCost + product.price);
-	} else {
-		// Sinon le prix total du panier correspond au prix du produit
-		sessionStorage.setItem("totalCost", product.price);
 	}
 }
