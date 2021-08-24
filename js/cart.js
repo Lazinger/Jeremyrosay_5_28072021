@@ -28,13 +28,13 @@ function displayPageCart(productInSessionStorage) {
 function displayCartItems(productInSessionStorage) {
 	// ************************************************CREATION AFFICHE PRIX TOTAL******************************//
 	let arrayTotalCost = [];
-
-	for (i = 0; i < productInSessionStorage.length; i += 1) {
-		let pricePerProduct = productInSessionStorage[i].price * productInSessionStorage[i].quantity;
-		console.log(pricePerProduct);
-
-		arrayTotalCost.push(pricePerProduct);
+	if (!productInSessionStorage) {
+		return;
 	}
+	productInSessionStorage.forEach((p) => {
+		let pricePerProduct = p.price * p.quantity;
+		arrayTotalCost.push(pricePerProduct);
+	});
 
 	const reducer = (acc, cur) => acc + cur;
 	const totalCost = arrayTotalCost.reduce(reducer, 0);
@@ -88,6 +88,7 @@ function displayCartItems(productInSessionStorage) {
 			// Affiche la quantité
 			const cartProductQuantity = document.createElement("div");
 			cartProductQuantity.setAttribute("class", "quantity col-2 col-md-6 text-center");
+			cartProductQuantity.setAttribute("id", `quantity-${product.id}-${product.lenses}`);
 			cartProductQuantity.innerHTML = product.quantity;
 			cartProductQuantityContainer.appendChild(cartProductQuantity);
 
@@ -100,7 +101,8 @@ function displayCartItems(productInSessionStorage) {
 			// Affiche le prix total par produit
 			const cartProductTotalPrice = document.createElement("p");
 			cartProductTotalPrice.setAttribute("class", "totalPrice col-6 col-md-2 col-lg-2 text-center m-0");
-			cartProductTotalPrice.innerHTML = product.price * product.quantity + ",00 €";
+			cartProductTotalPrice.setAttribute("id", `total-${product.id}-${product.lenses}`);
+			cartProductTotalPrice.innerHTML = product.price * product.quantity + " €";
 			cartItem.appendChild(cartProductTotalPrice);
 
 			// Affiche le bouton poubelle pour la suppression d'un produit
@@ -119,7 +121,7 @@ function displayCartItems(productInSessionStorage) {
 
 			//Affiche le prix total du panier
 			const totalCartPrice = document.getElementById("totalCartPrice");
-			totalCartPrice.innerHTML = totalCost + ",00 €";
+			totalCartPrice.innerHTML = totalCost;
 		}
 	}
 
@@ -138,16 +140,21 @@ function displayCartItems(productInSessionStorage) {
 			let newQtyValue = (divQtyValue += 1);
 			products[i].quantity = newQtyValue;
 			sessionStorage.setItem("products", JSON.stringify(products));
-			newTotalCost = products[i].productPrice * products[i].quantity;
-			console.log(newTotalCost);
-			sessionStorage.setItem("totalCost", JSON.stringify(newTotalCost));
+
+			document.getElementById(`quantity-${products[i].id}-${products[i].lenses}`).innerHTML = newQtyValue;
+
+			document.getElementById(`total-${products[i].id}-${products[i].lenses}`).innerHTML =
+				products[i].price * newQtyValue + " €";
+
+			document.getElementById("totalCartPrice").innerHTML = totalCost + products[i].price;
 			console.log(totalCost);
 
-			document.location.reload();
+			// document.location.reload();
 		});
 	}
 
 	// Decremente de 1 a chaque click sur le bouton -
+
 	for (let i = 0; i < substractButton.length; i += 1) {
 		let button = substractButton[i];
 		button.addEventListener("click", (event) => {
@@ -157,10 +164,14 @@ function displayCartItems(productInSessionStorage) {
 			let newQtyValue = (divQtyValue -= 1);
 			products[i].quantity = newQtyValue;
 			sessionStorage.setItem("products", JSON.stringify(products));
-			newTotalCost = products[i].productPrice * products[i].quantity;
-			console.log(newTotalCost);
-			sessionStorage.setItem("totalCost", JSON.stringify(newTotalCost));
-			document.location.reload();
+
+			document.getElementById(`quantity-${products[i].id}-${products[i].lenses}`).innerHTML = newQtyValue;
+			document.getElementById(`total-${products[i].id}-${products[i].lenses}`).innerHTML =
+				products[i].price * newQtyValue + " €";
+
+			document.getElementById("totalCartPrice").innerHTML = totalCost - products[i].price;
+
+			// document.location.reload();
 		});
 	}
 
@@ -175,7 +186,6 @@ function displayCartItems(productInSessionStorage) {
 
 			productInSessionStorage = productInSessionStorage.filter((el) => el.lenses !== idToDelete);
 			console.log(productInSessionStorage);
-
 			sessionStorage.setItem("products", JSON.stringify(productInSessionStorage));
 			document.location.reload();
 		});
@@ -190,8 +200,6 @@ function displayCartItems(productInSessionStorage) {
 		sessionStorage.clear();
 		document.location.reload();
 	});
-
-	console.log(totalCost);
 }
 
 displayPageCart(productInSessionStorage);

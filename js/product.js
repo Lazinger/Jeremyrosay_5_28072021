@@ -109,9 +109,20 @@ function getProductInCart(product) {
 	};
 
 	let productInSessionStorage = JSON.parse(sessionStorage.getItem("products"));
-
+	console.log(productInSessionStorage);
+	console.log(product);
 	if (productInSessionStorage) {
-		productInSessionStorage.push(optionsProduct);
+		let bufferProductIndex = productInSessionStorage.findIndex((p) => {
+			return p.id == optionsProduct.id && p.lenses == optionsProduct.lenses;
+		});
+		console.log(bufferProductIndex);
+		if (bufferProductIndex == -1) {
+			productInSessionStorage.push(optionsProduct);
+		} else {
+			productInSessionStorage[bufferProductIndex].quantity = productInSessionStorage[bufferProductIndex].quantity + 1;
+			productInSessionStorage[bufferProductIndex].price =
+				productInSessionStorage[bufferProductIndex].price + product.price / 100;
+		}
 		sessionStorage.setItem("products", JSON.stringify(productInSessionStorage));
 		popupConfirm(product);
 	} else {
