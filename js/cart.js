@@ -86,8 +86,10 @@ function displayCartItems(productInSessionStorage) {
 			cartProductQuantityContainer.appendChild(cartProductQuantitySub);
 
 			// Affiche la quantité
-			const cartProductQuantity = document.createElement("div");
+			const cartProductQuantity = document.createElement("input");
 			cartProductQuantity.setAttribute("class", "quantity col-2 col-md-6 text-center");
+			cartProductQuantity.setAttribute("value", `${product.quantity}`);
+			cartProductQuantity.setAttribute("name", "qty");
 			cartProductQuantity.setAttribute("id", `quantity-${product.id}-${product.lenses}`);
 			cartProductQuantity.innerHTML = product.quantity;
 			cartProductQuantityContainer.appendChild(cartProductQuantity);
@@ -135,19 +137,18 @@ function displayCartItems(productInSessionStorage) {
 		let button = addButton[i];
 		button.addEventListener("click", (event) => {
 			let buttonClicked = event.target;
-			let divQty = buttonClicked.parentElement.children[1];
-			let divQtyValue = products[i].quantity;
-			let newQtyValue = (divQtyValue += 1);
-			products[i].quantity = newQtyValue;
+			let input = buttonClicked.parentElement.children[1];
+			let inputValue = input.value;
+			let newValue = parseInt(inputValue) + 1;
+
+			input.value = newValue;
+			products[i].quantity = input.value;
 			sessionStorage.setItem("products", JSON.stringify(products));
 
-			document.getElementById(`quantity-${products[i].id}-${products[i].lenses}`).innerHTML = newQtyValue;
-
 			document.getElementById(`total-${products[i].id}-${products[i].lenses}`).innerHTML =
-				products[i].price * newQtyValue + " €";
+				products[i].price * newValue + " €";
 
 			document.getElementById("totalCartPrice").innerHTML = totalCost + products[i].price;
-			console.log(totalCost);
 
 			// document.location.reload();
 		});
@@ -159,17 +160,18 @@ function displayCartItems(productInSessionStorage) {
 		let button = substractButton[i];
 		button.addEventListener("click", (event) => {
 			let buttonClicked = event.target;
-			let divQty = buttonClicked.parentElement.children[1];
-			let divQtyValue = products[i].quantity;
-			let newQtyValue = (divQtyValue -= 1);
-			products[i].quantity = newQtyValue;
+			let input = buttonClicked.parentElement.children[1];
+			let inputValue = input.value;
+			let newValue = parseInt(inputValue) - 1;
+
+			input.value = newValue;
+			products[i].quantity = input.value;
 			sessionStorage.setItem("products", JSON.stringify(products));
 
-			document.getElementById(`quantity-${products[i].id}-${products[i].lenses}`).innerHTML = newQtyValue;
 			document.getElementById(`total-${products[i].id}-${products[i].lenses}`).innerHTML =
-				products[i].price * newQtyValue + " €";
+				products[i].price * newValue + " €";
 
-			document.getElementById("totalCartPrice").innerHTML = totalCost - products[i].price;
+			document.getElementById("totalCartPrice").innerHTML = totalCost + products[i].price;
 
 			// document.location.reload();
 		});
