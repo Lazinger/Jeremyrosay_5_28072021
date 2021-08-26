@@ -9,7 +9,7 @@
 		<title>OriCamera - Panier</title>
 	</head>
 	<body class="container">
-		<header class="header">
+		<header class="header pb-5">
 			<h1>
 				<a href="./index.html">OriCamera</a>
 			</h1>
@@ -46,6 +46,53 @@
 						<strong>Prix total : <span id="totalCartPrice"></span> €</strong>
 					</p>
 				</div>
+			</section>
+
+			<!-- Section : affichage du formulaire de commande -->
+			<section class="container pt-4 mt-4" id="formContent">
+				<h2 class="h5 text-center">Veuillez compléter le formulaire afin de finaliser votre commande</h2>
+				<form class="row g-3" id="form">
+					<div class="row g-3 border m-2">
+						<div class="col-md-6 p-3">
+							<label for="lastName" class="form-label">Nom</label>
+							<input type="text" class="form-control" name="lastName" id="lastName" required maxlength="20" />
+							<span id="lastNameMissing"></span>
+						</div>
+
+						<div class="col-md-6 p-3">
+							<label for="firstName" class="form-label">Prénom</label>
+							<input type="text" class="form-control" name="firstName" id="firstName" required maxlength="20" />
+							<span id="firstNameMissing"></span>
+						</div>
+
+						<div class="col-md-6 p-3">
+							<label for="mail" class="form-label">Email</label>
+							<input type="email" class="form-control" name="mail" id="mail" required />
+							<span id="mailMissing"></span>
+						</div>
+
+						<div class="col-12 p-3">
+							<label for="address" class="form-label">Adresse</label>
+							<input type="text" class="form-control" name="address" id="address" required />
+							<span id="addressMissing"></span>
+						</div>
+
+						<div class="col-md-3 p-3">
+							<label for="zip" class="form-label">Code postal</label>
+							<input type="text" class="form-control" name="zip" id="zip" required />
+							<span id="zipMissing"></span>
+						</div>
+
+						<div class="col-md-6 p-3">
+							<label for="city" class="form-label">Ville</label>
+							<input type="text" class="form-control" name="city" id="city" required />
+							<span id="cityMissing"></span>
+						</div>
+					</div>
+					<div class="col-12 p-5 mb-5 text-center">
+						<button type="submit" class="btn bg-pink p-2 btn-outline-dark" id="orderButton">Commander</button>
+					</div>
+				</form>
 			</section>
 		</main>
 		<script src="./js/cart.js"></script>

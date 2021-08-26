@@ -1,4 +1,5 @@
 let productInSessionStorage = JSON.parse(sessionStorage.getItem("products"));
+let totalCost = JSON.parse(sessionStorage.getItem("totalCost"));
 
 // ************************************************AFFICHER ZONE PANIER******************************//
 
@@ -9,9 +10,10 @@ function displayPageCart(productInSessionStorage) {
 		cartTitle.innerHTML = "Votre panier est vide !";
 
 		let cartContent = document.getElementById("cartContent");
-		// let formContent = document.getElementById("formContent");
+		let formContent = document.getElementById("formContent");
 		let parent = document.querySelector(".main");
 		parent.removeChild(cartContent);
+		parent.removeChild(formContent);
 	} else {
 		// Si le panier contient des produits, affiche "Votre panier", la liste des produits et le formulaire de commande
 		cartTitle.innerHTML = "Votre panier";
@@ -27,17 +29,21 @@ function displayPageCart(productInSessionStorage) {
 
 function displayCartItems(productInSessionStorage) {
 	// ************************************************CREATION AFFICHE PRIX TOTAL******************************//
+
 	let arrayTotalCost = [];
 	if (!productInSessionStorage) {
 		return;
 	}
 	productInSessionStorage.forEach((p) => {
-		let pricePerProduct = p.price * p.quantity;
-		arrayTotalCost.push(pricePerProduct);
+		let totalPricePerProduct = p.price * p.quantity;
+		arrayTotalCost.push(totalPricePerProduct);
 	});
 
 	const reducer = (acc, cur) => acc + cur;
 	const totalCost = arrayTotalCost.reduce(reducer, 0);
+	sessionStorage.setItem("totalCost", JSON.stringify(totalCost));
+
+	// ************************************************FIN * CREATION AFFICHE PRIX TOTAL * FIN*****************************//
 
 	let cartContainer = document.getElementById("cartContainer");
 	// Si le panier contient des produits, il les affiche
@@ -131,6 +137,7 @@ function displayCartItems(productInSessionStorage) {
 	let substractButton = document.getElementsByClassName("subButton");
 	let addButton = document.getElementsByClassName("addButton");
 	let products = JSON.parse(sessionStorage.getItem("products"));
+	let totalCostInSessionStorage = JSON.parse(sessionStorage.getItem("totalCost"));
 
 	// Incremente de 1 à chaque click sur le bouton +
 	for (let i = 0; i < addButton.length; i += 1) {
@@ -143,12 +150,15 @@ function displayCartItems(productInSessionStorage) {
 
 			input.value = newValue;
 			products[i].quantity = input.value;
+			totalCostInSessionStorage = totalCostInSessionStorage + products[i].price;
 			sessionStorage.setItem("products", JSON.stringify(products));
+			sessionStorage.setItem("totalCost", JSON.stringify(totalCostInSessionStorage));
+
+			const totalCartPrice = document.getElementById("totalCartPrice");
+			totalCartPrice.innerHTML = totalCostInSessionStorage;
 
 			document.getElementById(`total-${products[i].id}-${products[i].lenses}`).innerHTML =
 				products[i].price * newValue + " €";
-
-			document.getElementById("totalCartPrice").innerHTML = totalCost + products[i].price;
 
 			// document.location.reload();
 		});
@@ -166,12 +176,15 @@ function displayCartItems(productInSessionStorage) {
 
 			input.value = newValue;
 			products[i].quantity = input.value;
+			totalCostInSessionStorage = totalCostInSessionStorage - products[i].price;
 			sessionStorage.setItem("products", JSON.stringify(products));
+			sessionStorage.setItem("totalCost", JSON.stringify(totalCostInSessionStorage));
+
+			const totalCartPrice = document.getElementById("totalCartPrice");
+			totalCartPrice.innerHTML = totalCostInSessionStorage;
 
 			document.getElementById(`total-${products[i].id}-${products[i].lenses}`).innerHTML =
 				products[i].price * newValue + " €";
-
-			document.getElementById("totalCartPrice").innerHTML = totalCost + products[i].price;
 
 			// document.location.reload();
 		});
@@ -204,5 +217,180 @@ function displayCartItems(productInSessionStorage) {
 	});
 }
 
+// Vérifie les inputs des utilisateurs lorsqu'ils remplissent le formulaire de commande
+function checkInputs() {
+	// Récupère le bouton "Commander"
+	let submitForm = document.getElementById("orderButton");
+
+	// Valide les champs du formulaire au clic sur le bouton "commander"
+	submitForm.addEventListener("click", function (e) {
+		const lastName = document.getElementById("lastName");
+		const lastNameMissing = document.getElementById("lastNameMissing");
+		// Vérifie que le nom comporte seulement les caractères attendus
+		const lastNameValidation = /^[a-zA-ZéèêàçîïÉÈÎÏ]{2,}([-'\s][a-zA-ZéèêàçîïÉÈÎÏ]{2,})?/;
+
+		// Si le champ "Nom" est vide ou s'il ne respecte pas la regex, un message d'erreur s'affiche et bloque l'envoi du formulaire
+		if (lastName.validity.valueMissing) {
+			e.preventDefault();
+			lastNameMissing.textContent = "Ce champ est obligatoire";
+			lastNameMissing.style.color = "red";
+		} else if (lastNameValidation.test(lastName.value) == false) {
+			e.preventDefault();
+			lastNameMissing.textContent = "Format de saisie invalide";
+			lastNameMissing.style.color = "orange";
+		} else {
+			lastNameMissing.textContent = "";
+		}
+
+		const firstName = document.getElementById("firstName");
+		const firstNameMissing = document.getElementById("firstNameMissing");
+		// Vérifie que le prénom comporte seulement les caractères attendus
+		const firstNameValidation = /^[a-zA-ZéèêàçîïÉÈÎÏ]{2,}([-'\s][a-zA-ZéèêàçîïÉÈÎÏ]{2,})?/;
+
+		// Si le champ "Prénom" est vide ou s'il ne respecte pas la regex, un message d'erreur s'affiche et bloque l'envoi du formulaire
+		if (firstName.validity.valueMissing) {
+			e.preventDefault();
+			firstNameMissing.textContent = "Ce champ est obligatoire";
+			firstNameMissing.style.color = "red";
+		} else if (firstNameValidation.test(firstName.value) == false) {
+			e.preventDefault();
+			firstNameMissing.textContent = "Format de saisie invalide";
+			firstNameMissing.style.color = "orange";
+		} else {
+			firstNameMissing.textContent = "";
+		}
+
+		const mail = document.getElementById("mail");
+		const mailMissing = document.getElementById("mailMissing");
+		// Vérifie que le mail comporte seulement les caractères attendus
+		const mailValidation = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}/;
+
+		// Si le champ "Mail" est vide ou s'il ne respecte pas la regex, un message d'erreur s'affiche et bloque l'envoi du formulaire
+		if (mail.validity.valueMissing) {
+			e.preventDefault();
+			mailMissing.textContent = "Ce champ est obligatoire";
+			mailMissing.style.color = "red";
+		} else if (mailValidation.test(mail.value) == false) {
+			e.preventDefault();
+			mailMissing.textContent = "Format de saisie invalide";
+			mailMissing.style.color = "orange";
+		} else {
+			mailMissing.textContent = "";
+		}
+
+		const address = document.getElementById("address");
+		const addressMissing = document.getElementById("addressMissing");
+		// Vérifie que l'adresse comporte seulement les caractères attendus
+		const adressValidation = /^[0-9]{0,10}[-'\s]*[a-zA-Zàâäéèêëïîôöùûüç]{2,}/;
+
+		// Si le champ "Adresse" est vide ou s'il ne respecte pas la regex, un message d'erreur s'affiche et bloque l'envoi du formulaire
+		if (address.validity.valueMissing) {
+			e.preventDefault();
+			addressMissing.textContent = "Ce champ est obligatoire";
+			addressMissing.style.color = "red";
+		} else if (adressValidation.test(address.value) == false) {
+			e.preventDefault();
+			addressMissing.textContent = "Format de saisie invalide";
+			addressMissing.style.color = "orange";
+		} else {
+			addressMissing.textContent = "";
+		}
+
+		const zip = document.getElementById("zip");
+		const zipMissing = document.getElementById("zipMissing");
+		// Vérifie que le code postal comporte seulement les caractères attendus
+		const zipValidation = /^[1-9]{1}[0-9]{4}/;
+
+		// Si le champ "Code postal" est vide ou s'il ne respecte pas la regex, un message d'erreur s'affiche et bloque l'envoi du formulaire
+		if (zip.validity.valueMissing) {
+			e.preventDefault();
+			zipMissing.textContent = "Ce champ est obligatoire";
+			zipMissing.style.color = "red";
+		} else if (zipValidation.test(zip.value) == false) {
+			e.preventDefault();
+			zipMissing.textContent = "Format de saisie invalide";
+			zipMissing.style.color = "orange";
+		} else {
+			zipMissing.textContent = "";
+		}
+
+		const city = document.getElementById("city");
+		const cityMissing = document.getElementById("cityMissing");
+		// Vérifie que la ville comporte seulement les caractères attendus
+		const cityValidation = /^[a-zA-ZéèêàçîïÉÈÎÏ]{2,}([-'\s][a-zA-ZéèêàçîïÉÈÎÏ]{2,})?/;
+
+		// Si le champ "Ville" est vide ou s'il ne respecte pas la regex, un message d'erreur s'affiche et bloque l'envoi du formulaire
+		if (city.validity.valueMissing) {
+			e.preventDefault();
+			cityMissing.textContent = "Ce champ est obligatoire";
+			cityMissing.style.color = "red";
+		} else if (cityValidation.test(city.value) == false) {
+			e.preventDefault();
+			cityMissing.textContent = "Format de saisie invalide";
+			cityMissing.style.color = "orange";
+		} else {
+			cityMissing.textContent = "";
+		}
+	});
+}
+
+// Valide la commande et affiche la page de confirmation de commande
+function validateOrder() {
+	let orderValidation = document.getElementById("formContent");
+
+	orderValidation.addEventListener("submit", function (e) {
+		let totalCost = JSON.parse(sessionStorage.getItem("totalCost"));
+		e.preventDefault();
+
+		// Récupère les champs du formulaire
+		let firstNameForm = document.getElementById("firstName").value;
+		let lastNameForm = document.getElementById("lastName").value;
+		let addressForm = document.getElementById("address").value;
+		let cityForm = document.getElementById("city").value;
+		let mailForm = document.getElementById("mail").value;
+
+		// Tableau de produits envoyé au serveur contenant l'id des produits commandés
+		let products = [];
+		for (let i = 0; i < productInSessionStorage.length; i++) {
+			products.push(productInSessionStorage[i].id);
+		}
+
+		// Contient l'objet contact et le tableau produits envoyés au serveur
+		let orderContent = {
+			contact: {
+				firstName: firstNameForm,
+				lastName: lastNameForm,
+				address: addressForm,
+				city: cityForm,
+				email: mailForm,
+			},
+			products: products,
+		};
+
+		// Envoi la requête post au serveur
+		// fetch("http://localhost:3000/api/cameras/order"
+		fetch("http://localhost:3000/api/cameras/order", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(orderContent),
+		})
+			// Récupère une réponse au format json
+			.then(function (response) {
+				return response.json();
+			})
+
+			// Affiche le résultat sur la page "orderConfirmation.html"
+			.then(function (result) {
+				window.location.href = `./orderConfirmation.html?price=${totalCost + ",00 €"}&id=${result.orderId}`;
+			});
+		// Vide le local storage
+		localStorage.clear();
+	});
+}
+
 displayPageCart(productInSessionStorage);
 displayCartItems(productInSessionStorage);
+checkInputs();
+validateOrder();
