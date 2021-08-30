@@ -4,21 +4,44 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/style.css" />
 		<title>OriCamera - Panier</title>
 	</head>
-	<body class="container">
-		<header class="header pb-5">
-			<h1>
-				<a href="./index.html">OriCamera</a>
-			</h1>
-			<ul>
-				<li><a href="./cart.html">Panier</a></li>
-			</ul>
+	<body>
+		<header class="pb-5">
+			<!-- Navbar -->
+			<nav class="navbar navbar-expand-lg fixed-top">
+				<div class="container position-relative">
+					<h1><a href="./index.html">OriCamera</a></h1>
+					<div class="collapse navbar-collapse justify-content-end" id="navbarExample01">
+						<ul class="navbar-nav mb-2 mb-lg-0">
+							<li class="nav-item">
+								<a class="nav-link" href="./index.html">Accueil</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="./cart.html">Panier</a>
+							</li>
+						</ul>
+					</div>
+					<button
+						id="toggler"
+						class="navbar-toggler"
+						type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#navbarExample01"
+						aria-controls="navbarExample01"
+						aria-expanded="false"
+						aria-label="Toggle navigation"
+					>
+						<span class="navbar-toggler-icon"></span>
+					</button>
+				</div>
+			</nav>
 		</header>
 
-		<main class="main flex-column" id="main">
+		<main class="main container flex-column" id="main">
 			<section class="container" id="container">
 				<div id="div1" class="text-center p-3 m-3">
 					<h2 id="cartTitle" class="h3"></h2>
@@ -30,7 +53,7 @@
 					<a class="btn bg-pink btn-outline-dark" href="index.html">Continuer mes achats </a>
 				</div>
 			</section>
-			<section class="container border pt-4" id="cartContent">
+			<section class="containerShopList container border pt-4" id="cartContent">
 				<div class="row text-center p-3 border-bottom cartContent">
 					<div class="col-4 product">Produit</div>
 					<div class="col-2">Lenses</div>
@@ -50,9 +73,9 @@
 
 			<!-- Section : affichage du formulaire de commande -->
 			<section class="container pt-4 mt-4" id="formContent">
-				<h2 class="h5 text-center">Veuillez compléter le formulaire afin de finaliser votre commande</h2>
+				<h2 class="h5 text-center pb-5">Veuillez compléter le formulaire afin de finaliser votre commande</h2>
 				<form class="row g-3" id="form">
-					<div class="row g-3 border m-2">
+					<div class="containerFormList row g-3 border m-2">
 						<div class="col-md-6 p-3">
 							<label for="lastName" class="form-label">Nom</label>
 							<input type="text" class="form-control" name="lastName" id="lastName" required maxlength="20" />
@@ -95,6 +118,8 @@
 				</form>
 			</section>
 		</main>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+
 		<script src="./js/cart.js"></script>
 	</body>
 </html>

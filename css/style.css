@@ -1,32 +1,156 @@
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&family=Press+Start+2P&display=swap");
+body {
+	background-color: ghostwhite;
+}
+a {
+	text-transform: none;
+	text-decoration: none;
+}
+header {
+	height: 8rem;
+}
+header nav {
+	height: 8rem;
+	background-color: #121212;
+}
+li {
+	color: #7cb0fd;
+}
+h1,
+a {
+	font-family: "Press Start 2P", cursive;
+	color: lightcoral;
+}
+a:hover {
+	color: rgb(173, 55, 55);
+}
+
+p {
+	font-size: 1rem;
+}
+
 .container {
 	max-width: 64rem;
 }
 
-main {
-	display: flex;
-	justify-content: center;
-}
-.header {
-	display: flex;
-	justify-content: space-between;
-	padding-top: 1rem;
-}
-ul {
-	list-style: none;
-	text-decoration: none;
+.cardContainer {
+	width: 29rem;
 }
 
-a {
-	text-decoration: none;
-	font-size: 1.5rem;
+#toggler {
+	position: absolute;
+	top: 0rem;
+	right: 1rem;
 }
-
+.navbar-toggler-icon {
+	color: white;
+}
 .card {
+	width: fit-content;
 	margin-bottom: 1rem;
 	padding: 0;
+	border-radius: 2rem;
+	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .img {
 	object-fit: fill;
 	width: 100%;
+	border-radius: 2rem 2rem 0 0;
+	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.section {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+.containerShopList {
+	background-color: white;
+}
+.containerFormList {
+	background-color: white;
+}
+
+.productPrice {
+	font-size: 1rem;
+	font-weight: 700;
+	color: limegreen;
+}
+.productLinkContainer {
+	text-align: right;
+}
+.productLink {
+	font-size: 0.8rem;
+}
+
+.card-body {
+	padding: 2rem;
+}
+.card-body form {
+	padding: 1rem 0;
+}
+#addToCart {
+	border-radius: 1rem;
+	width: 15rem;
+	height: 3rem;
+	background-color: snow;
+	font-family: "Press Start 2P", cursive;
+	font-size: 0.7rem;
+}
+#addToCart:hover {
+	background-color: lightcoral;
+}
+#deleteCart {
+	border-radius: 1rem;
+	width: 15rem;
+	height: 3rem;
+	background-color: snow;
+	font-family: "Press Start 2P", cursive;
+	font-size: 0.7rem;
+}
+#deleteCart:hover {
+	background-color: lightcoral;
+}
+#orderButton {
+	border-radius: 1rem;
+	width: 15rem;
+	height: 3rem;
+	background-color: snow;
+	font-family: "Press Start 2P", cursive;
+	font-size: 0.7rem;
+}
+#orderButton:hover {
+	background-color: lightcoral;
+}
+.removeButton {
+	border-radius: 1rem;
+	width: 4rem;
+	height: 3rem;
+	background-color: snow;
+	font-family: "Press Start 2P", cursive;
+	font-size: 0.7rem;
+}
+.removeButton:hover {
+	background-color: lightcoral;
+}
+.addButton {
+	border-radius: 0 1rem 1rem 0;
+}
+.addButton:hover {
+	background-color: #68a4fd;
+}
+
+.subButton {
+	border-radius: 1rem 0 0 1rem;
+}
+.subButton:hover {
+	background-color: lightcoral;
+}
+
+.nav-link {
+	color: #68a4fd;
+}
+.nav-link:hover {
+	color: #a9c8f6;
 }
