@@ -52,6 +52,7 @@ function displayCartItems(productInSessionStorage) {
 			// Crée la div qui contient chaque produit
 			const cartItem = document.createElement("div");
 			cartItem.setAttribute("class", "row p-3 align-items-center border-bottom");
+			cartItem.setAttribute("id", "displayItemCart");
 			cartContainer.appendChild(cartItem);
 
 			// Crée la div qui contient l'image et le nom du produit
@@ -81,7 +82,7 @@ function displayCartItems(productInSessionStorage) {
 			const cartProductQuantityContainer = document.createElement("div");
 			cartProductQuantityContainer.setAttribute(
 				"class",
-				"quantityContainer row col-2 col-md-4 flex justify-content-center text-center"
+				"quantityContainer row col-12 col-md-4 flex justify-content-center text-center"
 			);
 			cartItem.appendChild(cartProductQuantityContainer);
 

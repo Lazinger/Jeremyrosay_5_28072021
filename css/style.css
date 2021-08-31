@@ -6,6 +6,15 @@ a {
 	text-transform: none;
 	text-decoration: none;
 }
+p {
+	color: snow;
+}
+#productDescription {
+	color: black;
+}
+.snowColor {
+	color: snow;
+}
 header {
 	height: 8rem;
 }
@@ -42,8 +51,8 @@ p {
 	top: 0rem;
 	right: 1rem;
 }
-.navbar-toggler-icon {
-	color: white;
+.navbar-toggler {
+	color: #68a4fd;
 }
 .card {
 	width: fit-content;
@@ -66,10 +75,18 @@ p {
 	justify-content: space-around;
 }
 .containerShopList {
-	background-color: white;
+	background-color: #68a4fd;
 }
 .containerFormList {
-	background-color: white;
+	background-color: #68a4fd;
+}
+#cartContainer {
+	background-color: lightcoral;
+	padding: 0rem 0rem;
+}
+#cartContent {
+	padding-right: 0rem;
+	padding-left: 0rem;
 }
 
 .productPrice {
@@ -130,9 +147,10 @@ p {
 	background-color: snow;
 	font-family: "Press Start 2P", cursive;
 	font-size: 0.7rem;
+	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 .removeButton:hover {
-	background-color: lightcoral;
+	background-color: #68a4fd;
 }
 .addButton {
 	border-radius: 0 1rem 1rem 0;
@@ -153,4 +171,33 @@ p {
 }
 .nav-link:hover {
 	color: #a9c8f6;
+}
+#displayPrice {
+	background-color: lightcoral;
+	color: snow;
+}
+
+@media screen and (max-width: 768px) {
+	.totalPrice {
+		display: none;
+	}
+	.productOption {
+		display: none;
+	}
+	.quantityContainer {
+		width: 100%;
+		padding-bottom: 1rem;
+	}
+	#cartContainer {
+		justify-content: center;
+	}
+	#displayItemCart {
+		justify-content: center;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	#deleteCart {
+		font-size: 0.5rem;
+	}
 }
