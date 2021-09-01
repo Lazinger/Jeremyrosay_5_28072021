@@ -88,7 +88,13 @@ function displayCartItems(productInSessionStorage) {
 
 			// Affiche le bouton "-"
 			const cartProductQuantitySub = document.createElement("button");
+			cartProductQuantitySub.setAttribute("id", `subButton-${product.id}-${product.lenses}`);
+
 			cartProductQuantitySub.setAttribute("class", "subButton col-2 col-md-3 text-center");
+			if (product.quantity == 1) {
+				cartProductQuantitySub.setAttribute("disabled", "true");
+			}
+
 			cartProductQuantitySub.innerHTML = "-";
 			cartProductQuantityContainer.appendChild(cartProductQuantitySub);
 
@@ -104,6 +110,8 @@ function displayCartItems(productInSessionStorage) {
 			// Affiche le bouton "+"
 			const cartProductQuantityAdd = document.createElement("button");
 			cartProductQuantityAdd.setAttribute("class", "addButton col-2 col-md-3 text-center");
+			cartProductOption.setAttribute("id", `addButton-${product.id}-${product.lenses}`);
+
 			cartProductQuantityAdd.innerHTML = "+";
 			cartProductQuantityContainer.appendChild(cartProductQuantityAdd);
 
@@ -152,6 +160,13 @@ function displayCartItems(productInSessionStorage) {
 
 			input.value = newValue;
 			products[i].quantity = input.value;
+
+			if (newValue == 1) {
+				document.getElementById(`subButton-${products[i].id}-${products[i].lenses}`).setAttribute("disabled", "true");
+			} else {
+				document.getElementById(`subButton-${products[i].id}-${products[i].lenses}`).removeAttribute("disabled");
+			}
+
 			totalCostInSessionStorage = totalCostInSessionStorage + products[i].price;
 			sessionStorage.setItem("products", JSON.stringify(products));
 			sessionStorage.setItem("totalCost", JSON.stringify(totalCostInSessionStorage));
@@ -178,7 +193,12 @@ function displayCartItems(productInSessionStorage) {
 
 			input.value = newValue;
 			products[i].quantity = input.value;
-
+			console.log(newValue);
+			if (newValue == 1) {
+				button.setAttribute("disabled", "true");
+			} else {
+				button.removeAttribute("disabled");
+			}
 			totalCostInSessionStorage = totalCostInSessionStorage - products[i].price;
 			sessionStorage.setItem("products", JSON.stringify(products));
 			sessionStorage.setItem("totalCost", JSON.stringify(totalCostInSessionStorage));
@@ -389,7 +409,7 @@ function validateOrder() {
 				window.location.href = `./orderConfirmation.html?price=${totalCost + ",00 €"}&id=${result.orderId}`;
 			});
 		// Vide le local storage
-		localStorage.clear();
+		sessionStorage.clear();
 	});
 }
 
