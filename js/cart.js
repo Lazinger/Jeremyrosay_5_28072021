@@ -30,15 +30,17 @@ function displayPageCart(productInSessionStorage) {
 function displayCartItems(productInSessionStorage) {
 	// ************************************************CREATION AFFICHE PRIX TOTAL******************************//
 
+	//Creation tableau vide
 	let arrayTotalCost = [];
 	if (!productInSessionStorage) {
 		return;
 	}
+	//On push dans le tableau arrayTotalCost le prix total de chaque produit
 	productInSessionStorage.forEach((p) => {
 		let totalPricePerProduct = p.price * p.quantity;
 		arrayTotalCost.push(totalPricePerProduct);
 	});
-
+	//On calcul la somme des résultats contenue dans le tableau
 	const reducer = (acc, cur) => acc + cur;
 	const totalCost = arrayTotalCost.reduce(reducer, 0);
 	sessionStorage.setItem("totalCost", JSON.stringify(totalCost));
@@ -391,8 +393,8 @@ function validateOrder() {
 		};
 
 		// Envoi la requête post au serveur
-		// fetch("http://localhost:3000/api/cameras/order"
-		fetch("http://localhost:3000/api/cameras/order", {
+		// fetch("https://oricamera.herokuapp.com/api/cameras/order"
+		fetch("https://oricamera.herokuapp.com/api/cameras/order", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

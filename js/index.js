@@ -4,7 +4,6 @@ main();
 async function main() {
 	//On applique await pour attendre le resultat de la promise
 	const products = await getProducts();
-	console.log(products);
 
 	products.forEach(displayProducts);
 }
@@ -15,7 +14,7 @@ function getProducts() {
 	//&
 	//On retourne le fetch complet
 	return (
-		fetch("http://localhost:3000/api/cameras")
+		fetch("https://oricamera.herokuapp.com/api/cameras")
 			.then(function (resProducts) {
 				return resProducts.json();
 			})

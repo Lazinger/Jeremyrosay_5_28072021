@@ -18,12 +18,11 @@ async function main() {
 
 	//On affiche le produit de façon dynamique
 	displayProduct(product, reduxPrice, lenses);
-	console.log(product);
 }
 
 function getProduct(productId) {
 	return (
-		fetch(`http://localhost:3000/api/cameras/${productId}`)
+		fetch(`https://oricamera.herokuapp.com/api/cameras/${productId}`)
 			.then(function (resProducts) {
 				return resProducts.json();
 			})
@@ -109,13 +108,12 @@ function getProductInCart(product) {
 	};
 
 	let productInSessionStorage = JSON.parse(sessionStorage.getItem("products"));
-	console.log(productInSessionStorage);
-	console.log(product);
+
 	if (productInSessionStorage) {
 		let bufferProductIndex = productInSessionStorage.findIndex((p) => {
 			return p.id == optionsProduct.id && p.lenses == optionsProduct.lenses;
 		});
-		console.log(bufferProductIndex);
+
 		if (bufferProductIndex == -1) {
 			productInSessionStorage.push(optionsProduct);
 		} else {
