@@ -20,6 +20,7 @@ async function main() {
 	displayProduct(product, reduxPrice, lenses);
 }
 
+// On recupere un produit unique grace a son id transmis dans l'URL
 function getProduct(productId) {
 	return (
 		fetch(`https://oricamera.herokuapp.com/api/cameras/${productId}`)
@@ -37,11 +38,13 @@ function getProduct(productId) {
 	);
 }
 
+// On formate le prix en le divisant par 100
 function formatedPrice(product) {
 	let newPrice = product.price / 100;
 	return newPrice;
 }
 
+// On recupere la liste des options "lenses"
 function getLenses(option) {
 	let options = option.lenses;
 	for (i = 0; i < options.length; i += 1) {
@@ -49,15 +52,17 @@ function getLenses(option) {
 	}
 }
 
+//On recupere la valeur de l'ID
 function getProductId() {
 	//On recup l'id contenue dans la chaine de caractere de l'url
 	const queryString_url_id = window.location.search;
-	//On retourne la premiere valeur associé au paramatre "id"
+	//On retourne la premiere valeur associé au parametre "id"
 	const urlSearchParams = new URLSearchParams(queryString_url_id);
 	const id = urlSearchParams.get("id");
 	return id;
 }
 
+// On affiche le produit
 function displayProduct(product, reduxPrice, lenses) {
 	document.getElementById("productImage").src = product.imageUrl;
 	document.getElementById("productTitle").textContent = product.name;
@@ -73,6 +78,7 @@ function displayProduct(product, reduxPrice, lenses) {
 	}
 }
 
+// Ajoute le produit selectionné au panier au click sur sur le bouton
 function addProductInCart(product) {
 	const buttonCart = document.getElementById("addToCart");
 
@@ -81,6 +87,7 @@ function addProductInCart(product) {
 	});
 }
 
+// Une popup apparait pour nous signaler que le click a bien fonctionné et nous demande si on continue les achats ou si on va au panier
 const popupConfirm = (product) => {
 	const idForm = document.getElementById("productLensesOptions");
 	const choiceForm = idForm.value;
@@ -94,6 +101,8 @@ Ok pour acceder au panier ou ANNULER pour rester sur la page du produit`
 	} else {
 	}
 };
+
+// On recupere les produits mis dans le panier et on les stocks dans le sessionStorage
 function getProductInCart(product) {
 	const idForm = document.getElementById("productLensesOptions");
 	const choiceForm = idForm.value;
@@ -109,6 +118,7 @@ function getProductInCart(product) {
 
 	let productInSessionStorage = JSON.parse(sessionStorage.getItem("products"));
 
+	// On verifie la quantié, si elle est == a -1 on push le tableau, sinon on ajoute +1 a la quantité et on modifie le prix selon la quantité
 	if (productInSessionStorage) {
 		let bufferProductIndex = productInSessionStorage.findIndex((p) => {
 			return p.id == optionsProduct.id && p.lenses == optionsProduct.lenses;

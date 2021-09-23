@@ -29,8 +29,11 @@ function getProducts() {
 	);
 }
 
+// Affiche les produits //
 function displayProducts(product) {
+	// On recup l'element ayant pour id templateProduct et on le stock dans templateElement
 	const templateElement = document.getElementById("templateProduct");
+	// On stock le contenue de templateElement dans cloneElement
 	const cloneElement = document.importNode(templateElement.content, true);
 
 	cloneElement.getElementById("productImage").src = product.imageUrl;
